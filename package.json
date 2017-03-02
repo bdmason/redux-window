@@ -1,0 +1,11 @@
+{
+  "name": "redux-window",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "main": "main.js",
+  "dependencies": {
+    "lodash.throttle": "^4.1.1",
+    "redux": "^3.6.0"
+  }
+}
