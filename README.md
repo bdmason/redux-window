@@ -1,32 +1,49 @@
 # redux-window
 
-This is a small package to set the browser window's width and height in state.
+This is a small package to store the browser window's width and height in state.
 
-It stores `window.innerWidth` and `window.innerHeight` in the initial state, then adds a listener to the resize event to keep state up to date with any changes in the window size.
+## Getting started
 
-`lodash.throttle()` is used to improve performance by preventing the event listener from firing too often.
+Install:
+~~~
+npm install --save redux-window
+~~~
 
-## Getting Started
-
-Pass the reduxWindow reducer to your store:
+Add the reduxWindow reducer:
 ~~~~
-import { combineReducers, createStore } from 'redux'
-import { reduxWindow, resizeEvent } from 'redux-window'
+import { combineReducers } from 'redux';
+import reduxWindow from 'redux-window';
 
 const reducers = combineReducers({
   reduxWindow,
-  // other reducers...
-})
-const store = createStore(reducers)
+  ...other reducers
+});
 ~~~~
-Then pass your store to the resizeEvent:
+Then in `index.js`, import resizeEvent and pass it your store:
 ~~~~
-resizeEvent(store)
+import { resizeEvent } from 'redux-window';
+import store from './store';
+
+resizeEvent(store);
 ~~~~
 
-## Optional throttle wait
+## Optional throttle on dispatch
 
-The resize event is throttled to allow dispatch to be fired a maximum of once every 200ms. To change the default wait time, pass it as a second parameter to resizeEvent.
-~~~~
-resizeEvent(store, 500)
-~~~~
+The resize event is throttled to allow dispatch to be fired a maximum of once every 200ms. To change the default wait time, pass a second parameter to resizeEvent.
+~~~
+resizeEvent(store, 500);
+~~~
+
+## Selectors
+To get the window width and height from state:
+~~~
+import { getWidth, getHeight } from 'redux-window';
+
+function mapStateToProps(state, ownProps) {
+  return {
+    width: getWidth(state),
+    height: getHeight(state),
+  };
+}
+~~~
+*NOTE: the selectors require your reducer to use the key `reduxWindow`, as in the example above.* 
