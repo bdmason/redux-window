@@ -1,6 +1,6 @@
 {
   "name": "redux-window",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "private": false,
   "license": "MIT",
   "keywords": [
@@ -18,12 +18,13 @@
     "name": "Ben Mason",
     "email": "contact@bdmason.co.uk"
   },
-  "repository" :  {
-    "type" : "git",
-    "url" : "https://github.com/bdmason/redux-window.git"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bdmason/redux-window.git"
   },
   "scripts": {
     "build": "babel -s inline -d lib src",
+    "dev": "npm run build -- --watch",
     "prepublish": "npm run build"
   },
   "dependencies": {

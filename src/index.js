@@ -5,8 +5,11 @@ const SET_WINDOW = '@@redux-window/SET_WINDOW';
 
 // reducer
 export default function reducer(state = {
-  width: window.innerWidth,
-  height: window.innerHeight
+  // These are initialised to zero however
+  // the resize event is triggered onload
+  // when using resize event
+  width: 0,
+  height: 0
 }, action) {
   switch (action.type) {
     case SET_WINDOW: {
@@ -39,8 +42,22 @@ export function getHeight(state) {
 }
 
 // function for listening to the window
-export function resizeEvent(store, wait = 200) {
-  window.addEventListener('resize', throttle(() => {
+export function resizeEvent(store, options) {
+  // To prevent new options being a breaking change
+  // I check if the options is a number and then
+  // consider it the wait time
+  const { wait, defaultWidth, defaultHeight } =
+    typeof options === 'number' ?
+      { wait: options, defaultWidth: 1200, defaultHeight: 900 }
+      :
+      options;
+
+  if (typeof window === 'undefined') {
+    store.dispatch(setWindow(options.defaultWidth, options.defaultHeight))
+  } else {
     store.dispatch(setWindow(window.innerWidth, window.innerHeight))
-  }, wait));
+    window.addEventListener('resize', throttle(() => {
+      store.dispatch(setWindow(window.innerWidth, window.innerHeight))
+    }, options.wait));
+  }
 }
